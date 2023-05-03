@@ -1,37 +1,15 @@
-import {
-  Avatar,
-  CardHeader,
-  Chip,
-  Grid,
-  IconButton,
-  Menu,
-  MenuItem,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Chip, Grid, Paper, Stack, Typography } from "@mui/material";
 import React, { useContext } from "react";
 
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
-import { Box, Rating } from "@mui/material";
-import {
-  Bathroom,
-  Bed,
-  Delete,
-  Edit,
-  Favorite,
-  Map,
-  MoreVert,
-  Place,
-  SquareFoot,
-} from "@mui/icons-material";
+import { Box } from "@mui/material";
+import { Bathroom, Bed, Map, SquareFoot } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { deleteCourse } from "../../api/api";
 import Images from "./ImagesCarousel";
+import { IconEye } from "@tabler/icons";
 const AdminProperties = ({ edit }) => {
   const { properties, setProperties } = useContext(AuthContext);
 
@@ -58,21 +36,9 @@ export default AdminProperties;
 
 function Post({ property, setProperties }) {
   const navigate = useNavigate();
-
-  const handelDelete = async () => {
-    if (
-      window.confirm("Are you sure you want to delete this property?") === true
-    ) {
-      const data = await deleteCourse(property.id);
-      if (data) {
-        setProperties((properties) =>
-          properties.filter((crs) => crs.id !== property.id)
-        );
-      }
-    }
-  };
+  console.log(property);
   return (
-    <Card sx={{ maxWidth: 960, margin: "auto", mb: 2 }}>
+    <Card sx={{ maxWidth: 960, margin: "auto", mb: 2, position: "relative" }}>
       <Grid container>
         {property.images.length > 0 ? (
           <Grid item xs={12}>
@@ -84,14 +50,18 @@ function Post({ property, setProperties }) {
             sx={{
               p: 2,
               pt: 0,
-              minHeight: "360px",
+              minHeight: "330px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
             }}
           >
             <Typography variant="subtitle1" component="div">
               <span
                 style={{
                   color: "blueviolet",
-                  fontSize: "2rem",
+                  fontSize: 38,
+                  fontWeight: "bold",
                 }}
               >
                 ${property.price}
@@ -132,48 +102,34 @@ function Post({ property, setProperties }) {
               sx={{ my: 2, alignItems: "center" }}
               spacing={1}
             >
-              <Typography variant="body1" component="div">
+              <Typography
+                variant="body1"
+                component="a"
+                href={property.mapLink}
+                target="_blank"
+                sx={{
+                  textDecoration: "none",
+                }}
+              >
                 {property.location}
               </Typography>{" "}
               <Map color="primary" />
             </Stack>
 
-            <div
-              className="truncate"
-              dangerouslySetInnerHTML={{
-                __html:
-                  property.about.substr(
-                    0,
-                    property.about.length > 300
-                      ? 300
-                      : property.about.length - 20
-                  ) + "...",
-              }}
-            />
-
             <Box
               sx={{
                 mt: 3,
-                display: "flex",
-                justifyContent: "space-between",
               }}
             >
               <Button
-                startIcon={<Edit />}
+                fullWidth
+                startIcon={<IconEye />}
                 onClick={() => {
-                  navigate(`/property/${property.id}`);
+                  navigate(`/view/${property.id}`);
                 }}
-                variant="outlined"
+                variant="contained"
               >
-                Edit Property
-              </Button>
-              <Button
-                startIcon={<Delete />}
-                onClick={handelDelete}
-                variant="outlined"
-                color="error"
-              >
-                Delete Property
+                View Property
               </Button>
             </Box>
           </Box>

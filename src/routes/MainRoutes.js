@@ -4,6 +4,8 @@ import { lazy } from "react";
 import MainLayout from "layout/MainLayout";
 import Loadable from "ui-component/Loadable";
 import AdminProperties from "Components/Properties/AdminProperties";
+import ViewAdminProperty from "Components/Properties/ViewAdminProperty";
+import MaintananceReport from "Components/Properties/MaintananceReport";
 
 // dashboard routing
 
@@ -31,6 +33,14 @@ const MainRoutes = {
     {
       path: "/property/:propertyId",
       element: <AdminProperty />,
+    },
+    {
+      path: "/view/:propertyId",
+      element: <ViewAdminProperty />,
+    },
+    {
+      path: "/reports",
+      element: <MaintananceReport />,
     },
   ],
 };

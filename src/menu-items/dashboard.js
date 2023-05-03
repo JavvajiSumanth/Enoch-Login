@@ -1,19 +1,18 @@
 // assets
-import { IconDashboard, IconBuilding , IconTool } from "@tabler/icons";
+import { IconDashboard, IconBuilding, IconTool } from "@tabler/icons";
 
 // constant
-const icons = { IconDashboard, IconBuilding,IconTool };
+const icons = { IconDashboard, IconBuilding, IconTool };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
 const dashboard = {
   id: "dashboard",
-  title: "Dashboard",
   type: "group",
   children: [
     {
       id: "default",
-      title: "Dashboard",
+      title: "Properties",
       type: "item",
       url: "/",
       icon: icons.IconDashboard,
@@ -33,7 +32,7 @@ const dashboard = {
       id: "default3",
       title: "Maintanance Report",
       type: "item",
-      url: "/property",
+      url: "/reports",
       icon: icons.IconTool,
       breadcrumbs: false,
       visible: "OWNER",

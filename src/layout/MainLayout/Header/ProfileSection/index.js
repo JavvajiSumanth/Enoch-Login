@@ -181,28 +181,24 @@ const ProfileSection = () => {
                       <Typography variant="subtitle2">Owner</Typography>
                     </Stack>
                   </Box>
-                  <PerfectScrollbar
-                    style={{
-                      height: "100%",
-                    }}
-                  >
-                    <Box sx={{ p: 2 }}>
-                      <List
-                        component="nav"
-                        sx={{
-                          width: "100%",
-                          minWidth: 300,
-                          backgroundColor: theme.palette.background.paper,
-                          borderRadius: "10px",
-                          [theme.breakpoints.down("md")]: {
-                            minWidth: "100%",
-                          },
-                          "& .MuiListItemButton-root": {
-                            mt: 0.5,
-                          },
-                        }}
-                      >
-                        <ListItemButton
+
+                  <Box sx={{ px: 2 }}>
+                    <List
+                      component="nav"
+                      sx={{
+                        width: "100%",
+                        minWidth: 300,
+                        backgroundColor: theme.palette.background.paper,
+                        borderRadius: "10px",
+                        [theme.breakpoints.down("md")]: {
+                          minWidth: "100%",
+                        },
+                        "& .MuiListItemButton-root": {
+                          mt: 0.5,
+                        },
+                      }}
+                    >
+                      {/* <ListItemButton
                           sx={{
                             borderRadius: `${customization.borderRadius}px`,
                           }}
@@ -225,27 +221,26 @@ const ProfileSection = () => {
                               </Typography>
                             }
                           />
-                        </ListItemButton>
+                        </ListItemButton> */}
 
-                        <ListItemButton
-                          sx={{
-                            borderRadius: `${customization.borderRadius}px`,
-                          }}
-                          selected={selectedIndex === 4}
-                          onClick={signOutUser}
-                        >
-                          <ListItemIcon>
-                            <IconLogout stroke={1.5} size="1.3rem" />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={
-                              <Typography variant="body2">Logout</Typography>
-                            }
-                          />
-                        </ListItemButton>
-                      </List>
-                    </Box>
-                  </PerfectScrollbar>
+                      <ListItemButton
+                        sx={{
+                          borderRadius: `${customization.borderRadius}px`,
+                        }}
+                        selected={selectedIndex === 4}
+                        onClick={signOutUser}
+                      >
+                        <ListItemIcon>
+                          <IconLogout stroke={1.5} size="1.3rem" />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography variant="body2">Logout</Typography>
+                          }
+                        />
+                      </ListItemButton>
+                    </List>
+                  </Box>
                 </MainCard>
               </ClickAwayListener>
             </Paper>

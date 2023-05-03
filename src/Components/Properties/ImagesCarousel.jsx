@@ -12,8 +12,6 @@ import "swiper/css/navigation";
 import { FreeMode, Navigation, Thumbs } from "swiper";
 
 export default function Images({ images, single }) {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
-
   return (
     <>
       <Swiper
@@ -24,34 +22,16 @@ export default function Images({ images, single }) {
         loop={true}
         spaceBetween={10}
         navigation={true}
-        thumbs={{ swiper: thumbsSwiper }}
         // modules={[FreeMode, Navigation, Thumbs]}
         modules={[FreeMode, Navigation]}
         className="mySwiper2"
       >
         {images.map((image, idx) => (
           <SwiperSlide key={idx}>
-            <img src={image} alt="img" />
+            <img src={image} alt="img" width={"100%"} />
           </SwiperSlide>
         ))}
       </Swiper>
-      {/* <Swiper
-        onSwiper={setThumbsSwiper}
-        loop={true}
-        spaceBetween={10}
-        slidesPerView={3}
-        freeMode={true}
-        watchSlidesProgress={true}
-        modules={[FreeMode, Navigation]}
-        // modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper"
-      >
-        {images.map((image, idx) => (
-          <SwiperSlide key={idx}>
-            <img src={image} alt="img" />
-          </SwiperSlide>
-        ))}
-      </Swiper> */}
     </>
   );
 }
