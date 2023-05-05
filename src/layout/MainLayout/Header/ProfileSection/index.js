@@ -178,7 +178,7 @@ const ProfileSection = () => {
                           {user?.firstName} {user?.lastName}
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2">Owner</Typography>
+                      <Typography variant="subtitle2">{user?.role}</Typography>
                     </Stack>
                   </Box>
 
@@ -228,7 +228,13 @@ const ProfileSection = () => {
                           borderRadius: `${customization.borderRadius}px`,
                         }}
                         selected={selectedIndex === 4}
-                        onClick={signOutUser}
+                        onClick={() =>
+                          signOutUser(
+                            user?.role === "OWNER"
+                              ? "/owner-login"
+                              : "tenant-login"
+                          )
+                        }
                       >
                         <ListItemIcon>
                           <IconLogout stroke={1.5} size="1.3rem" />

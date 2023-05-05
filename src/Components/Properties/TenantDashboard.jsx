@@ -16,9 +16,7 @@ import { IconEye } from "@tabler/icons";
 import CustomPaginationActionsTable from "./Transactions";
 import HorizontalLinearStepper from "./Stepper";
 
-const ViewAdminProperty = () => {
-  const { propertyId } = useParams();
-
+const TenantDashboard = () => {
   const [property, setProperty] = useState(null);
   const [images, setImages] = useState([]);
 
@@ -29,10 +27,10 @@ const ViewAdminProperty = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (propertyId && properties.length > 0) {
+    if ("lf3y620q" && properties.length > 0) {
       console.log("Update Property Page");
       const property = properties.find(
-        (property) => property.id === propertyId
+        (property) => property.id === "lf3y620q"
       );
       if (property) {
         setProperty(property);
@@ -53,7 +51,7 @@ const ViewAdminProperty = () => {
       setImages([]);
       console.log("Create Property Page");
     }
-  }, [propertyId, properties]);
+  }, [properties]);
 
   const [reports, setReports] = useState([]);
 
@@ -166,173 +164,135 @@ const ViewAdminProperty = () => {
                       __html: property.about,
                     }}
                   />
-
-                  <Box
-                    sx={{
-                      mt: 3,
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Button
-                      startIcon={<IconEye />}
-                      onClick={() => {
-                        navigate(`/property/${property.id}`);
-                      }}
-                      variant="contained"
-                    >
-                      Update Property
-                    </Button>
-                    <Button
-                      startIcon={<Delete />}
-                      onClick={handelDelete}
-                      variant="outlined"
-                      color="error"
-                    >
-                      Delete Property
-                    </Button>
-                  </Box>
                 </Box>
               </Grid>
             </Grid>
           </Box>
 
-          {propertyId === "lf3y620q" ? (
-            <Grid container gap={4} sx={{ maxWidth: 1080, margin: "auto" }}>
-              <Grid item xs={4}>
-                <Card
-                  elevation={3}
+          <Grid container gap={4} sx={{ maxWidth: 1080, margin: "auto" }}>
+            <Grid item xs={4}>
+              <Card
+                elevation={3}
+                sx={{
+                  marginLeft: "auto",
+                  maxWidth: 300,
+                  my: 2,
+                  ml: 10,
+                  p: 2,
+                }}
+              >
+                <Typography
+                  variant="h3"
+                  gutterBottom
                   sx={{
-                    marginLeft: "auto",
-                    maxWidth: 300,
-                    my: 2,
-                    ml: 10,
-                    p: 2,
+                    color: "#1e88e5",
                   }}
                 >
-                  <Typography
-                    variant="h3"
-                    gutterBottom
-                    sx={{
-                      color: "#1e88e5",
-                    }}
-                  >
-                    Tenant Details
+                  OWNER Details
+                </Typography>
+                <Box>
+                  <Typography variant="subtitle1" component="div">
+                    Name:{" "}
+                    <span
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Mr. Sumanth Javvaji
+                    </span>{" "}
                   </Typography>
-                  <Box>
-                    <Typography variant="subtitle1" component="div">
-                      Name:{" "}
-                      <span
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Mr. John Doe
-                      </span>{" "}
-                    </Typography>
-                    <Typography variant="subtitle1" component="div">
-                      Email:{" "}
-                      <span
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        john@gmail.com
-                      </span>{" "}
-                    </Typography>
-                    <Typography variant="subtitle1" component="div">
-                      Name:{" "}
-                      <span
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        +1 333-444-4444
-                      </span>{" "}
-                    </Typography>
-                  </Box>
-                </Card>
-              </Grid>
-              <Grid item xs={7}>
-                <Card
-                  elevation={3}
-                  sx={{
-                    p: 2,
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    gutterBottom
-                    sx={{
-                      color: "#1e88e5",
-                    }}
-                  >
-                    Recent Payments
+                  <Typography variant="subtitle1" component="div">
+                    Email:{" "}
+                    <span
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      sumanthjavaji@gmail.com
+                    </span>{" "}
                   </Typography>
-                  <CustomPaginationActionsTable />
-                </Card>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    p: 2,
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    gutterBottom
-                    sx={{
-                      color: "#1e88e5",
-                    }}
-                  >
-                    Maintanance Report
+                  <Typography variant="subtitle1" component="div">
+                    Name:{" "}
+                    <span
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      +1 892-393-0303
+                    </span>{" "}
                   </Typography>
-                  {reports?.map((report) => (
-                    <Card elevation={3} sx={{ margin: "auto", my: 3 }}>
-                      <Grid container>
-                        {report.images.length > 0 ? (
-                          <Grid item xs={6}>
-                            <Images images={report.images} />
-                          </Grid>
-                        ) : null}
-                        <Grid
-                          item
-                          xs={6}
-                          sx={{
-                            p: 3,
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <Box>{report.about}</Box>
-                          <HorizontalLinearStepper />
-                        </Grid>
-                      </Grid>
-                    </Card>
-                  ))}
                 </Box>
-              </Grid>
+              </Card>
             </Grid>
-          ) : (
-            <Typography
-              variant="h2"
-              gutterBottom
-              sx={{
-                textAlign: "center",
-              }}
-            >
-              No Tenants/Applications
-            </Typography>
-          )}
+            <Grid item xs={7}>
+              <Card
+                elevation={3}
+                sx={{
+                  p: 2,
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  gutterBottom
+                  sx={{
+                    color: "#1e88e5",
+                  }}
+                >
+                  Recent Payments
+                </Typography>
+                <CustomPaginationActionsTable />
+              </Card>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  p: 2,
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  gutterBottom
+                  sx={{
+                    color: "#1e88e5",
+                  }}
+                >
+                  Maintanance Report
+                </Typography>
+                {reports?.map((report) => (
+                  <Card elevation={3} sx={{ margin: "auto", my: 3 }}>
+                    <Grid container>
+                      {report.images.length > 0 ? (
+                        <Grid item xs={6}>
+                          <Images images={report.images} />
+                        </Grid>
+                      ) : null}
+                      <Grid
+                        item
+                        xs={6}
+                        sx={{
+                          p: 3,
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Box>{report.about}</Box>
+                        <HorizontalLinearStepper hide />
+                      </Grid>
+                    </Grid>
+                  </Card>
+                ))}
+              </Box>
+            </Grid>
+          </Grid>
         </Paper>
       ) : null}
     </>
   );
 };
 
-export default ViewAdminProperty;
+export default TenantDashboard;

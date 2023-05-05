@@ -6,7 +6,6 @@ import { Link, useLocation } from "react-router-dom";
 import LogoImg from "../../assets/pictures/logo.svg";
 const Footer = () => {
   const location = useLocation();
-  console.log(location);
   if (location.pathname.includes("admin")) return null;
   else
     return (

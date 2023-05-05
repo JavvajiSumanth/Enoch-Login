@@ -6,6 +6,7 @@ import Loadable from "ui-component/Loadable";
 import AdminProperties from "Components/Properties/AdminProperties";
 import ViewAdminProperty from "Components/Properties/ViewAdminProperty";
 import MaintananceReport from "Components/Properties/MaintananceReport";
+import TenantDashboard from "Components/Properties/TenantDashboard";
 
 // dashboard routing
 
@@ -18,7 +19,7 @@ const AdminProperty = Loadable(
 
 // ==============================|| MAIN ROUTING ||============================== //
 
-const MainRoutes = {
+export const OWNER_ROUTES = {
   path: "/",
   element: <MainLayout />,
   children: [
@@ -38,11 +39,20 @@ const MainRoutes = {
       path: "/view/:propertyId",
       element: <ViewAdminProperty />,
     },
+  ],
+};
+export const TENANT_ROUTES = {
+  path: "/",
+  element: <MainLayout />,
+  children: [
+    {
+      path: "/",
+      element: <TenantDashboard />,
+    },
+
     {
       path: "/reports",
       element: <MaintananceReport />,
     },
   ],
 };
-
-export default MainRoutes;

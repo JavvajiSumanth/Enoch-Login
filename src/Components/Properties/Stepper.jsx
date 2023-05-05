@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 
 const steps = ["Started", "In Progress", "Review"];
 
-export default function HorizontalLinearStepper() {
+export default function HorizontalLinearStepper({ hide }) {
   const [activeStep, setActiveStep] = React.useState(1);
   const [skipped, setSkipped] = React.useState(new Set());
 
@@ -84,21 +84,23 @@ export default function HorizontalLinearStepper() {
           >
             Repair {steps[activeStep]}
           </Typography>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
+          {!!hide ? null : (
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Button
+                color="inherit"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{ mr: 1 }}
+              >
+                Back
+              </Button>
+              <Box sx={{ flex: "1 1 auto" }} />
 
-            <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
-            </Button>
-          </Box>
+              <Button onClick={handleNext}>
+                {activeStep === steps.length - 1 ? "Finish" : "Next"}
+              </Button>
+            </Box>
+          )}
         </React.Fragment>
       )}
     </Box>

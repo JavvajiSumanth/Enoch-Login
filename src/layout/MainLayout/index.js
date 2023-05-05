@@ -16,7 +16,6 @@ import Breadcrumbs from "ui-component/extended/Breadcrumbs";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Customization from "../Customization";
-import navigation from "menu-items";
 import { drawerWidth } from "store/constant";
 import { SET_MENU } from "store/actions";
 
@@ -25,6 +24,7 @@ import { IconChevronRight } from "@tabler/icons";
 import { useContext } from "react";
 import { AuthContext } from "context/AuthContext";
 import { useEffect } from "react";
+import { owner_menu, tenant_menu } from "menu-items";
 
 // styles
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -84,7 +84,8 @@ const MainLayout = () => {
     dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
   };
 
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, user } = useContext(AuthContext);
+  const menus = user?.role === "OWNER" ? owner_menu : tenant_menu;
   const navigate = useNavigate();
   useEffect(() => {
     if (!isAuthenticated) {
@@ -124,14 +125,14 @@ const MainLayout = () => {
         {/* breadcrumb */}
         <Breadcrumbs
           separator={IconChevronRight}
-          navigation={navigation}
+          navigation={menus}
           icon
           title
           rightAlign
         />
         <Outlet />
       </Main>
-      <Customization />
+      {/* <Customization /> */}
     </Box>
   );
 };

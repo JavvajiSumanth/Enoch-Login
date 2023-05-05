@@ -36,7 +36,6 @@ export default AdminProperties;
 
 function Post({ property, setProperties }) {
   const navigate = useNavigate();
-  console.log(property);
   return (
     <Card sx={{ maxWidth: 960, margin: "auto", mb: 2, position: "relative" }}>
       <Grid container>

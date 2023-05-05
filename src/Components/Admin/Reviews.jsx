@@ -34,7 +34,6 @@ export default function Reviews() {
     setOpen(false);
   };
   const reset = () => {
-    console.log("resetting");
     setName("");
     setReview("");
     setEdit(false);

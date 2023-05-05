@@ -35,10 +35,12 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import { AuthContext } from "context/AuthContext";
 import { useContext } from "react";
+import { useLocation, useParams } from "react-router";
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ ...others }) => {
+  const { pathname } = useLocation();
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const [checked, setChecked] = useState(true);
@@ -79,8 +81,8 @@ const FirebaseLogin = ({ ...others }) => {
 
       <Formik
         initialValues={{
-          email: "sumanth@gmail.com",
-          password: "sumanth",
+          email: "",
+          password: "",
           submit: null,
         }}
         validationSchema={Yup.object().shape({
@@ -95,7 +97,7 @@ const FirebaseLogin = ({ ...others }) => {
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
-              login(values);
+              login({ ...values, pathname });
             }
           } catch (err) {
             console.error(err);

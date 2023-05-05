@@ -13,6 +13,7 @@ import { createUserInDb, fetchUser } from "api/api";
 
 export const AuthContext = React.createContext();
 
+let fromOwner = JSON.parse(localStorage.getItem("from_owner"));
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
@@ -20,12 +21,15 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
+  const [allProperties, setAllProperties] = useState([]);
   // const location = useLocation();
   const timeout = useRef();
 
-  async function login({ email, password }) {
+  async function login({ email, password, pathname }) {
     try {
       setIsLoading(true); //this helps show loading screen when trying to fetch data from the firestore
+      fromOwner = pathname === "/owner-login" ? true : false;
+      localStorage.setItem("from_owner", fromOwner);
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       setIsLoading(false);
@@ -62,11 +66,12 @@ export const AuthProvider = ({ children }) => {
       });
   }
 
-  function signOutUser() {
+  function signOutUser(path) {
     signOut(auth)
       .then(() => {
+        localStorage.setItem("from_owner", null);
         console.log("Sign Out Sucessfull");
-        navigate("/owner-login");
+        navigate(path);
       })
       .catch((error) => {
         console.log(error);
@@ -79,9 +84,26 @@ export const AuthProvider = ({ children }) => {
         const usr = await fetchUser(user?.uid);
 
         if (usr) {
-          setIsAuthenticated(true);
-          setUser(usr);
-          navigate("/");
+          console.log({ usr, fromOwner });
+          if (
+            (fromOwner === true && usr.role === "OWNER") ||
+            (fromOwner === false && usr.role === "TENANT")
+          ) {
+            setIsAuthenticated(true);
+            setUser(usr);
+            navigate("/");
+          } else {
+            setErrorMessage(
+              fromOwner === true
+                ? "This Email is registed for Tenant Login"
+                : "This Email is registed for Owner Login"
+            );
+            if (fromOwner === true) {
+              signOutUser("/owner-login");
+            } else {
+              signOutUser("/tenant-login");
+            }
+          }
         } else {
           setIsAuthenticated(false);
           console.log("User Not found in DB");
@@ -120,6 +142,7 @@ export const AuthProvider = ({ children }) => {
         fetchedProperties.push(doc.data());
       });
       setProperties(fetchedProperties);
+      setAllProperties(fetchedProperties);
     }
     fetchData();
   }, []);
@@ -135,6 +158,7 @@ export const AuthProvider = ({ children }) => {
         properties,
         setProperties,
         register,
+        allProperties,
       }}
     >
       {!isLoading ? children : <Loader />}
