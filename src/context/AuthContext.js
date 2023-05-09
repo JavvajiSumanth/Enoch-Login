@@ -85,6 +85,15 @@ export const AuthProvider = ({ children }) => {
 
         if (usr) {
           console.log({ usr, fromOwner });
+          if (usr.block) {
+            setErrorMessage("You are blocked from accessing the site");
+            if (fromOwner === true) {
+              signOutUser("/owner-login");
+            } else {
+              signOutUser("/tenant-login");
+            }
+            return;
+          }
           if (
             (fromOwner === true && usr.role === "OWNER") ||
             (fromOwner === false && usr.role === "TENANT")
@@ -139,13 +148,15 @@ export const AuthProvider = ({ children }) => {
     async function fetchData() {
       const querySnapshot = await getDocs(collection(db, "properties"));
       querySnapshot.forEach((doc) => {
-        fetchedProperties.push(doc.data());
+        if (doc.data().OWNER.uid === user.uid) {
+          fetchedProperties.push(doc.data());
+        }
       });
       setProperties(fetchedProperties);
       setAllProperties(fetchedProperties);
     }
     fetchData();
-  }, []);
+  }, [user]);
 
   return (
     <AuthContext.Provider
