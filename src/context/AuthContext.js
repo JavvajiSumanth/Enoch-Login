@@ -151,12 +151,12 @@ export const AuthProvider = ({ children }) => {
 
       querySnapshot.forEach((doc) => {
         console.log(doc.data());
-        if (user.role === "OWNER") {
-          if (doc.data().OWNER?.uid === user.uid) {
+        if (user?.role === "OWNER") {
+          if (doc.data().OWNER?.uid === user?.uid) {
             fetchedProperties.push(doc.data());
           }
-        } else if (user.role === "TENANT") {
-          if (doc.data()?.TENANT?.uid === user.uid) {
+        } else if (user?.role === "TENANT") {
+          if (doc.data()?.TENANT?.uid === user?.uid) {
             fetchedProperties.push(doc.data());
           }
         }

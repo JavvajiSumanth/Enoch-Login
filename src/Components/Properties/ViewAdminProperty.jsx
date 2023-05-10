@@ -10,7 +10,7 @@ import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import uniqid from "uniqid";
 import { AuthContext } from "../../context/AuthContext";
 import { Bathroom, Bed, Delete, Map, SquareFoot } from "@mui/icons-material";
-import { deleteCourse } from "api/api";
+import { deleteCourse, fetchTransaction } from "api/api";
 import Images from "./ImagesCarousel";
 import { IconEye } from "@tabler/icons";
 import CustomPaginationActionsTable from "./Transactions";
@@ -24,6 +24,7 @@ const ViewAdminProperty = () => {
 
   const [about, setAbout] = useState("");
   const { properties, setProperties } = useContext(AuthContext);
+  const [rows, setRows] = useState([]);
 
   const scriptedRef = useScriptRef();
 
@@ -70,7 +71,16 @@ const ViewAdminProperty = () => {
     }
     fetchData();
   }, []);
-
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchTransaction(propertyId);
+      console.log(data);
+      setRows(data?.rows || []);
+    }
+    if (propertyId) {
+      fetchData();
+    }
+  }, [propertyId]);
   const handelDelete = async () => {
     if (
       window.confirm("Are you sure you want to delete this property?") === true
@@ -245,26 +255,27 @@ const ViewAdminProperty = () => {
                   </Box>
                 </Card>
               </Grid>
-              <Grid item xs={7}>
-                <Card
-                  elevation={3}
-                  sx={{
-                    p: 2,
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    gutterBottom
+              {rows?.length > 0 && (
+                <Grid item xs={12}>
+                  <Card
+                    elevation={3}
                     sx={{
-                      color: "#1e88e5",
+                      p: 2,
                     }}
                   >
-                    Recent Payments
-                  </Typography>
-                  <CustomPaginationActionsTable />
-                </Card>
-              </Grid>
-
+                    <Typography
+                      variant="h4"
+                      gutterBottom
+                      sx={{
+                        color: "#1e88e5",
+                      }}
+                    >
+                      Recent Payments
+                    </Typography>
+                    <CustomPaginationActionsTable rows={rows} />
+                  </Card>
+                </Grid>
+              )}
               <Grid item xs={12}>
                 <Box
                   sx={{

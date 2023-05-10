@@ -1,29 +1,25 @@
 import { Button, Card, Chip, Grid, Paper, Typography } from "@mui/material";
-import { Box, Stack, useTheme } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import "react-quill/dist/quill.snow.css";
-import useScriptRef from "../../Helpers/useScriptRef";
 import { db, storage } from "../../firebase/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
-import uniqid from "uniqid";
 import { AuthContext } from "../../context/AuthContext";
-import { Bathroom, Bed, Delete, Map, SquareFoot } from "@mui/icons-material";
-import { deleteCourse } from "api/api";
+import { Bathroom, Bed, Map, SquareFoot } from "@mui/icons-material";
 import Images from "./ImagesCarousel";
-import { IconEye } from "@tabler/icons";
 import CustomPaginationActionsTable from "./Transactions";
 import HorizontalLinearStepper from "./Stepper";
+import Paypal from "./Paypal";
+import { createTransaction, fetchTransaction } from "api/api";
 
 const TenantDashboard = () => {
   const { properties } = useContext(AuthContext);
 
   const property = properties[0] || null;
 
-  const navigate = useNavigate();
-
   const [reports, setReports] = useState([]);
+  const [rows, setRows] = useState([]);
+
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const fetchedProperties = [];
@@ -39,6 +35,29 @@ const TenantDashboard = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchTransaction(property?.id);
+      console.log(data);
+      setRows(data?.rows || []);
+    }
+    if (property?.id) {
+      fetchData();
+    }
+  }, [properties]);
+
+  const handleTransaction = () => {
+    setRows((data) => [
+      { month: "May 23", date: "10th May", rent: property.price },
+      ...data,
+    ]);
+    setSuccess(true);
+
+    createTransaction(property.id, [
+      { month: "May 23", date: "10th May", rent: property.price },
+      ...rows,
+    ]);
+  };
   return (
     <>
       {!!property ? (
@@ -50,6 +69,7 @@ const TenantDashboard = () => {
             variant="h1"
             className="test"
             gutterBottom
+            onClick={handleTransaction}
           >
             {property?.name}
           </Typography>
@@ -175,8 +195,7 @@ const TenantDashboard = () => {
               </Card>
             </Grid>
             <Grid item xs={7}>
-              <Card
-                elevation={3}
+              <Box
                 sx={{
                   p: 2,
                 }}
@@ -188,11 +207,49 @@ const TenantDashboard = () => {
                     color: "#1e88e5",
                   }}
                 >
-                  Recent Payments
+                  Pay Rent
                 </Typography>
-                <CustomPaginationActionsTable />
-              </Card>
+                <Paypal
+                  amount={property.price}
+                  handleTransaction={handleTransaction}
+                />
+              </Box>
             </Grid>
+
+            {success && (
+              <Typography
+                variant="h2"
+                sx={{
+                  width: "100%",
+
+                  textAlign: "center",
+                }}
+                color={"green"}
+              >
+                Payment is successful 🎉
+              </Typography>
+            )}
+            {rows?.length > 0 && (
+              <Grid item xs={12}>
+                <Card
+                  elevation={3}
+                  sx={{
+                    p: 2,
+                  }}
+                >
+                  <Typography
+                    variant="h4"
+                    gutterBottom
+                    sx={{
+                      color: "#1e88e5",
+                    }}
+                  >
+                    Recent Payments
+                  </Typography>
+                  <CustomPaginationActionsTable rows={rows} />
+                </Card>
+              </Grid>
+            )}
 
             <Grid item xs={12}>
               <Box
@@ -209,8 +266,8 @@ const TenantDashboard = () => {
                 >
                   Maintanance Report
                 </Typography>
-                {reports?.map((report) => (
-                  <Card elevation={3} sx={{ margin: "auto", my: 3 }}>
+                {reports?.map((report, idx) => (
+                  <Card elevation={3} sx={{ margin: "auto", my: 3 }} key={idx}>
                     <Grid container>
                       {report.images.length > 0 ? (
                         <Grid item xs={6}>
@@ -243,3 +300,7 @@ const TenantDashboard = () => {
 };
 
 export default TenantDashboard;
+
+function createData(month, date, rent) {
+  return { month, date, rent };
+}

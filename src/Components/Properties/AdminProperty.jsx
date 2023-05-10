@@ -158,7 +158,7 @@ const AdminProperty = () => {
 
     const updatedProperties = properties.map((property) => {
       if (property.id === courseObj.id) {
-        return courseObj;
+        return { ...property, ...courseObj };
       } else return property;
     });
     setProperties(updatedProperties);

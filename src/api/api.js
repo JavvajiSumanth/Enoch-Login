@@ -1,4 +1,4 @@
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db, storage } from "../firebase/firebase";
 
 export const deleteCourse = async (propId) => {
@@ -29,6 +29,24 @@ export const createUserInDb = async (data) => {
 
 export const fetchUser = async (uid) => {
   const userRef = doc(db, "users", uid);
+  const docSnap = await getDoc(userRef);
+  if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data());
+
+    return docSnap.data();
+  } else {
+    // docSnap.data() will be undefined in this case
+    return null;
+  }
+};
+
+export const createTransaction = async (propertyId, data) => {
+  const userRef = doc(db, "tranactions", propertyId);
+  await setDoc(userRef, { rows: data });
+};
+
+export const fetchTransaction = async (uid) => {
+  const userRef = doc(db, "tranactions", uid);
   const docSnap = await getDoc(userRef);
   if (docSnap.exists()) {
     console.log("Document data:", docSnap.data());
