@@ -197,8 +197,8 @@ const ViewAdminProperty = () => {
             </Grid>
           </Box>
 
-          {propertyId === "lf3y620q" ? (
-            <Grid container gap={4} sx={{ maxWidth: 1080, margin: "auto" }}>
+          {!!property.TENANT ? (
+            <Grid container gap={2} sx={{ maxWidth: 1180, margin: "auto" }}>
               <Grid item xs={4}>
                 <Card
                   elevation={3}
@@ -228,7 +228,7 @@ const ViewAdminProperty = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        Mr. John Doe
+                        {property.TENANT?.firstName}
                       </span>{" "}
                     </Typography>
                     <Typography variant="subtitle1" component="div">
@@ -239,18 +239,7 @@ const ViewAdminProperty = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        john@gmail.com
-                      </span>{" "}
-                    </Typography>
-                    <Typography variant="subtitle1" component="div">
-                      Name:{" "}
-                      <span
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        +1 333-444-4444
+                        {property.TENANT?.email}
                       </span>{" "}
                     </Typography>
                   </Box>

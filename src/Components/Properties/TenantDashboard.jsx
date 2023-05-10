@@ -17,41 +17,11 @@ import CustomPaginationActionsTable from "./Transactions";
 import HorizontalLinearStepper from "./Stepper";
 
 const TenantDashboard = () => {
-  const [property, setProperty] = useState(null);
-  const [images, setImages] = useState([]);
+  const { properties } = useContext(AuthContext);
 
-  const [about, setAbout] = useState("");
-  const { properties, setProperties } = useContext(AuthContext);
-
-  const scriptedRef = useScriptRef();
+  const property = properties[0] || null;
 
   const navigate = useNavigate();
-  useEffect(() => {
-    if ("lf3y620q" && properties.length > 0) {
-      console.log("Update Property Page");
-      const property = properties.find(
-        (property) => property.id === "lf3y620q"
-      );
-      if (property) {
-        setProperty(property);
-        setAbout(property.about);
-        setImages(
-          property.images.map((image, idx) => ({
-            src: image,
-            id: idx,
-            file: null,
-          }))
-        );
-      } else {
-        // navigate("/");
-      }
-    } else {
-      setProperty(null);
-      setAbout("");
-      setImages([]);
-      console.log("Create Property Page");
-    }
-  }, [properties]);
 
   const [reports, setReports] = useState([]);
 
@@ -69,18 +39,6 @@ const TenantDashboard = () => {
     fetchData();
   }, []);
 
-  const handelDelete = async () => {
-    if (
-      window.confirm("Are you sure you want to delete this property?") === true
-    ) {
-      const data = await deleteCourse(property.id);
-      if (data) {
-        setProperties((properties) =>
-          properties.filter((crs) => crs.id !== property.id)
-        );
-      }
-    }
-  };
   return (
     <>
       {!!property ? (
@@ -188,7 +146,7 @@ const TenantDashboard = () => {
                     color: "#1e88e5",
                   }}
                 >
-                  OWNER Details
+                  Owner Details
                 </Typography>
                 <Box>
                   <Typography variant="subtitle1" component="div">
@@ -199,7 +157,7 @@ const TenantDashboard = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      Mr. Sumanth Javvaji
+                      {property.OWNER.firstName} {property.OWNER.lastName}
                     </span>{" "}
                   </Typography>
                   <Typography variant="subtitle1" component="div">
@@ -210,18 +168,7 @@ const TenantDashboard = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      sumanthjavaji@gmail.com
-                    </span>{" "}
-                  </Typography>
-                  <Typography variant="subtitle1" component="div">
-                    Name:{" "}
-                    <span
-                      style={{
-                        fontSize: 16,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      +1 892-393-0303
+                      {property.OWNER.email}
                     </span>{" "}
                   </Typography>
                 </Box>

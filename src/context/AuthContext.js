@@ -142,21 +142,35 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const fetchedProperties = [];
     console.log("Fetching Properties");
 
     async function fetchData() {
+      const fetchedProperties = [];
+
       const querySnapshot = await getDocs(collection(db, "properties"));
+
       querySnapshot.forEach((doc) => {
-        if (doc.data().OWNER.uid === user.uid) {
-          fetchedProperties.push(doc.data());
+        console.log(doc.data());
+        if (user.role === "OWNER") {
+          if (doc.data().OWNER?.uid === user.uid) {
+            fetchedProperties.push(doc.data());
+          }
+        } else if (user.role === "TENANT") {
+          if (doc.data()?.TENANT?.uid === user.uid) {
+            fetchedProperties.push(doc.data());
+          }
         }
       });
       setProperties(fetchedProperties);
       setAllProperties(fetchedProperties);
     }
-    fetchData();
+    try {
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
   }, [user]);
+  console.log(properties);
 
   return (
     <AuthContext.Provider
