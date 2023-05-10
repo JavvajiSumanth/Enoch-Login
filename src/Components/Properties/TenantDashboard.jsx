@@ -69,7 +69,6 @@ const TenantDashboard = () => {
             variant="h1"
             className="test"
             gutterBottom
-            onClick={handleTransaction}
           >
             {property?.name}
           </Typography>
