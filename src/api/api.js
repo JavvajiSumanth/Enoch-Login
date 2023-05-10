@@ -41,8 +41,12 @@ export const fetchUser = async (uid) => {
 };
 
 export const createTransaction = async (propertyId, data) => {
-  const userRef = doc(db, "tranactions", propertyId);
-  await setDoc(userRef, { rows: data });
+  try {
+    const userRef = doc(db, "tranactions", propertyId);
+    await setDoc(userRef, { rows: data });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const fetchTransaction = async (uid) => {

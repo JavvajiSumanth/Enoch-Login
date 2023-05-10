@@ -47,16 +47,15 @@ const TenantDashboard = () => {
   }, [properties]);
 
   const handleTransaction = () => {
-    setRows((data) => [
-      { month: "May 23", date: "10th May", rent: property.price },
-      ...data,
-    ]);
+    setRows((data) => {
+      const newData = [
+        { month: "May 23", date: "10th May", rent: property.price },
+        ...data,
+      ];
+      createTransaction(property?.id, newData);
+      return newData;
+    });
     setSuccess(true);
-
-    createTransaction(property.id, [
-      { month: "May 23", date: "10th May", rent: property.price },
-      ...rows,
-    ]);
   };
   return (
     <>
