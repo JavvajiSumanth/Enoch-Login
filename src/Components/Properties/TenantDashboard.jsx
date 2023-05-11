@@ -28,12 +28,16 @@ const TenantDashboard = () => {
     async function fetchData() {
       const querySnapshot = await getDocs(collection(db, "reports"));
       querySnapshot.forEach((doc) => {
-        fetchedProperties.push(doc.data());
+        if (doc.data().propertyId === property.id) {
+          fetchedProperties.push(doc.data());
+        }
       });
       setReports(fetchedProperties);
     }
-    fetchData();
-  }, []);
+    if (property) {
+      fetchData();
+    }
+  }, [properties]);
 
   useEffect(() => {
     async function fetchData() {
@@ -249,47 +253,53 @@ const TenantDashboard = () => {
               </Grid>
             )}
 
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  p: 2,
-                }}
-              >
-                <Typography
-                  variant="h4"
-                  gutterBottom
+            {reports.length > 0 && (
+              <Grid item xs={12}>
+                <Box
                   sx={{
-                    color: "#1e88e5",
+                    p: 2,
                   }}
                 >
-                  Maintanance Report
-                </Typography>
-                {reports?.map((report, idx) => (
-                  <Card elevation={3} sx={{ margin: "auto", my: 3 }} key={idx}>
-                    <Grid container>
-                      {report.images.length > 0 ? (
-                        <Grid item xs={6}>
-                          <Images images={report.images} />
+                  <Typography
+                    variant="h4"
+                    gutterBottom
+                    sx={{
+                      color: "#1e88e5",
+                    }}
+                  >
+                    Maintanance Report
+                  </Typography>
+                  {reports?.map((report, idx) => (
+                    <Card
+                      elevation={3}
+                      sx={{ margin: "auto", my: 3 }}
+                      key={idx}
+                    >
+                      <Grid container>
+                        {report.images.length > 0 ? (
+                          <Grid item xs={6}>
+                            <Images images={report.images} />
+                          </Grid>
+                        ) : null}
+                        <Grid
+                          item
+                          xs={6}
+                          sx={{
+                            p: 3,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Box>{report.about}</Box>
+                          <HorizontalLinearStepper hide report={report} />
                         </Grid>
-                      ) : null}
-                      <Grid
-                        item
-                        xs={6}
-                        sx={{
-                          p: 3,
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Box>{report.about}</Box>
-                        <HorizontalLinearStepper hide />
                       </Grid>
-                    </Grid>
-                  </Card>
-                ))}
-              </Box>
-            </Grid>
+                    </Card>
+                  ))}
+                </Box>
+              </Grid>
+            )}
           </Grid>
         </Paper>
       ) : null}
@@ -298,7 +308,3 @@ const TenantDashboard = () => {
 };
 
 export default TenantDashboard;
-
-function createData(month, date, rent) {
-  return { month, date, rent };
-}

@@ -15,20 +15,25 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import uniqid from "uniqid";
 import Drop from "./DropZone/Drop";
+import { AuthContext } from "context/AuthContext";
 
 const MaintananceReport = () => {
   const navigate = useNavigate();
+
+  const { properties } = useContext(AuthContext);
+  const propId = properties[0] || null;
+
   const [property, setProperty] = useState("");
   const [images, setImages] = useState([]);
   const createReport = async (courseObj) => {
     const genratedID = uniqid();
     courseObj.id = genratedID;
     courseObj.date = new Date();
+    courseObj.propertyId = propId.id;
 
     const courseRef = doc(db, "reports", genratedID);
     await setDoc(courseRef, courseObj);
     setImages([]);
-    setProperty("");
   };
   const [loading, setLoading] = useState(false);
   const [updated, setUpdated] = useState(false);

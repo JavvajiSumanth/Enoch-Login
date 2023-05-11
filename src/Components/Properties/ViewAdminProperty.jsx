@@ -65,12 +65,14 @@ const ViewAdminProperty = () => {
     async function fetchData() {
       const querySnapshot = await getDocs(collection(db, "reports"));
       querySnapshot.forEach((doc) => {
-        fetchedProperties.push(doc.data());
+        if (doc.data().propertyId === propertyId) {
+          fetchedProperties.push(doc.data());
+        }
       });
       setReports(fetchedProperties);
     }
     fetchData();
-  }, []);
+  }, [propertyId]);
   useEffect(() => {
     async function fetchData() {
       const data = await fetchTransaction(propertyId);
@@ -276,47 +278,53 @@ const ViewAdminProperty = () => {
                   </Card>
                 </Grid>
               )}
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    p: 2,
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    gutterBottom
+              {reports.length > 0 && (
+                <Grid item xs={12}>
+                  <Box
                     sx={{
-                      color: "#1e88e5",
+                      p: 2,
                     }}
                   >
-                    Maintanance Report
-                  </Typography>
-                  {reports?.map((report) => (
-                    <Card elevation={3} sx={{ margin: "auto", my: 3 }}>
-                      <Grid container>
-                        {report.images.length > 0 ? (
-                          <Grid item xs={6}>
-                            <Images images={report.images} />
+                    <Typography
+                      variant="h4"
+                      gutterBottom
+                      sx={{
+                        color: "#1e88e5",
+                      }}
+                    >
+                      Maintanance Report
+                    </Typography>
+                    {reports?.map((report, idx) => (
+                      <Card
+                        elevation={3}
+                        sx={{ margin: "auto", my: 3 }}
+                        key={idx}
+                      >
+                        <Grid container>
+                          {report.images.length > 0 ? (
+                            <Grid item xs={6}>
+                              <Images images={report.images} />
+                            </Grid>
+                          ) : null}
+                          <Grid
+                            item
+                            xs={6}
+                            sx={{
+                              p: 3,
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Box>{report.about}</Box>
+                            <HorizontalLinearStepper report={report} />
                           </Grid>
-                        ) : null}
-                        <Grid
-                          item
-                          xs={6}
-                          sx={{
-                            p: 3,
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <Box>{report.about}</Box>
-                          <HorizontalLinearStepper />
                         </Grid>
-                      </Grid>
-                    </Card>
-                  ))}
-                </Box>
-              </Grid>
+                      </Card>
+                    ))}
+                  </Box>
+                </Grid>
+              )}
             </Grid>
           ) : (
             <Typography

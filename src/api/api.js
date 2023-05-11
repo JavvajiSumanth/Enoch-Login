@@ -61,3 +61,10 @@ export const fetchTransaction = async (uid) => {
     return null;
   }
 };
+
+export const updateReport = async (reportId, status) => {
+  const propertyRef = doc(db, "reports", reportId);
+  await updateDoc(propertyRef, {
+    status,
+  });
+};
