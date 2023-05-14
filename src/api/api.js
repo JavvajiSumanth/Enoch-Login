@@ -68,3 +68,13 @@ export const updateReport = async (reportId, status) => {
     status,
   });
 };
+
+export const deleteReport = async (reportId) => {
+  try {
+    await deleteDoc(doc(db, "reports", reportId));
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};

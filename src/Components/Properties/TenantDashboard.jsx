@@ -272,7 +272,11 @@ const TenantDashboard = () => {
                   {reports?.map((report, idx) => (
                     <Card
                       elevation={3}
-                      sx={{ margin: "auto", my: 3 }}
+                      sx={{
+                        margin: "auto",
+                        my: 3,
+                        position: "relative",
+                      }}
                       key={idx}
                     >
                       <Grid container>
@@ -292,7 +296,11 @@ const TenantDashboard = () => {
                           }}
                         >
                           <Box>{report.about}</Box>
-                          <HorizontalLinearStepper hide report={report} />
+                          <HorizontalLinearStepper
+                            hide
+                            report={report}
+                            setReports={setReports}
+                          />
                         </Grid>
                       </Grid>
                     </Card>

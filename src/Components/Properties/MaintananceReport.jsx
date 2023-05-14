@@ -62,6 +62,7 @@ const MaintananceReport = () => {
         }
       }
       propertyObj.images = pics;
+      propertyObj.status = 0;
       console.log(propertyObj, uploadingImages);
 
       await createReport(propertyObj);
@@ -143,6 +144,7 @@ const MaintananceReport = () => {
                   type="submit"
                   variant="contained"
                   color="secondary"
+                  disabled={!propId}
                   onClick={handelFormSubmit}
                 >
                   Submit
