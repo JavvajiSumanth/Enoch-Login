@@ -9,8 +9,15 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import uniqid from "uniqid";
 import { AuthContext } from "../../context/AuthContext";
-import { Bathroom, Bed, Delete, Map, SquareFoot } from "@mui/icons-material";
-import { deleteCourse, fetchTransaction } from "api/api";
+import {
+  Bathroom,
+  Bed,
+  Delete,
+  HideSource,
+  Map,
+  SquareFoot,
+} from "@mui/icons-material";
+import { deleteCourse, fetchTransaction, hidePropertyFn } from "api/api";
 import Images from "./ImagesCarousel";
 import { IconEye } from "@tabler/icons";
 import CustomPaginationActionsTable from "./Transactions";
@@ -92,6 +99,23 @@ const ViewAdminProperty = () => {
         setProperties((properties) =>
           properties.filter((crs) => crs.id !== property.id)
         );
+      }
+    }
+  };
+
+  const [hideProperty, setHideProperty] = useState(false);
+
+  const handleHide = async () => {
+    if (
+      window.confirm(
+        `Are you sure you want to ${
+          hideProperty === true ? "Show" : "Hide"
+        } this property?`
+      ) === true
+    ) {
+      const data = await hidePropertyFn(property.id, !hideProperty);
+      if (data) {
+        setHideProperty(!hideProperty);
       }
     }
   };
@@ -194,6 +218,14 @@ const ViewAdminProperty = () => {
                       variant="contained"
                     >
                       Update Property
+                    </Button>
+                    <Button
+                      startIcon={<HideSource />}
+                      color="secondary"
+                      onClick={handleHide}
+                      variant="contained"
+                    >
+                      {hideProperty === true ? "Show" : "Hide"} Property
                     </Button>
                     <Button
                       startIcon={<Delete />}
@@ -306,17 +338,10 @@ const ViewAdminProperty = () => {
                               <Images images={report.images} />
                             </Grid>
                           ) : null}
-                          <Grid
-                            item
-                            xs={6}
-                            sx={{
-                              p: 3,
-                              display: "flex",
-                              flexDirection: "column",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <Box>{report.about}</Box>
+                          <Grid item xs={6} sx={{ p: 1.5 }}>
+                            <Typography sx={{ mb: 2 }}>
+                              {report.about}
+                            </Typography>
                             <HorizontalLinearStepper
                               report={report}
                               setReports={setReports}

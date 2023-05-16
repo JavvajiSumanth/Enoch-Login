@@ -285,17 +285,8 @@ const TenantDashboard = () => {
                             <Images images={report.images} />
                           </Grid>
                         ) : null}
-                        <Grid
-                          item
-                          xs={6}
-                          sx={{
-                            p: 3,
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <Box>{report.about}</Box>
+                        <Grid item xs={6} sx={{ p: 1.5 }}>
+                          <Typography sx={{ mb: 2 }}>{report.about}</Typography>
                           <HorizontalLinearStepper
                             hide
                             report={report}
